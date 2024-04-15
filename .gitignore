@@ -1,0 +1,14 @@
+# IDEs
+*.vscode
+*.idea
+*.nvimrc
+
+# MAC cache files
+*.DS_Store
+
+# files generated for unit tests
+mocks
+
+# files for docker - this should be removed once they are fixed
+*docker-compose.yml
+*Dockerfile
