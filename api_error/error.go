@@ -4,7 +4,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// New function is a facade to handle error messages and status codes
+// New function is a wrapper to handle error messages and status codes
 func New(status int, message string) *echo.HTTPError {
 	return &echo.HTTPError{
 		Code:     status,

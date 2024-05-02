@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	validate *validator.Validate // use a singleton to be thread safe and cache information per docs
+	validate *validator.Validate // use a singleton to be thread safe
 )
 
 func init() {

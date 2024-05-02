@@ -11,8 +11,9 @@ import (
 )
 
 const (
-	//connectionString = "root:example@tcp(127.0.0.1:3307)/test_db?parseTime=true"
-	connectionString = "docker:docker@tcp(golang_db:3306)/test_db?parseTime=true"
+	createSchemaStatement = "CREATE SCHEMA IF NOT EXISTS test_db;"
+	connectionString      = "root:example@tcp(127.0.0.1:3307)/test_db?parseTime=true"
+	//connectionString = "docker:docker@tcp(golang_db:3306)/test_db?parseTime=true"
 )
 
 func SetupDB() (*gorm.DB, error) {
@@ -21,7 +22,9 @@ func SetupDB() (*gorm.DB, error) {
 		return nil, err
 	}
 
+	// this is just to see the executed queries in console, you can remove it if you want
 	gormDB.Debug()
+
 	return gormDB, nil
 }
 
@@ -49,7 +52,11 @@ func setupSqlDBAndGormDB() (*sql.DB, *gorm.DB, error) {
 		return nil, nil, api_error.New(http.StatusInternalServerError, "failed to open gorm db").WithInternal(err)
 	}
 
-	if err := db.AutoMigrate(&models.Person{}); err != nil {
+	if err = db.Exec(createSchemaStatement).Error; err != nil {
+		return nil, nil, api_error.New(http.StatusInternalServerError, "failed to create schema").WithInternal(err)
+	}
+
+	if err = db.AutoMigrate(&models.Person{}); err != nil {
 		return nil, nil, api_error.New(http.StatusInternalServerError, "failed to automigrate db").WithInternal(err)
 	}
 
